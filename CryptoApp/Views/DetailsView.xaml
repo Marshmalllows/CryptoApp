@@ -12,10 +12,6 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <ContentControl Content="{Binding SelectedViewModel }"/>
-        <TextBox Grid.Row="0" Text="Details about cryptos"></TextBox>
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Margin="10" Width="200" Content="Home" Command="{Binding UpdateViewCommand}" CommandParameter="Home" />
-            <Button Margin="10" Width="200" Content="Details" Command="{Binding UpdateViewCommand}" CommandParameter="Details" />
-        </StackPanel>
+        <TextBox Grid.Row="0" HorizontalAlignment="Center" Text="Crypto details" MaxHeight="100" FontSize="18" BorderThickness="0" />
     </Grid>
 </UserControl>
