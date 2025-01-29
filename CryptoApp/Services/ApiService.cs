@@ -14,4 +14,11 @@ public static class ApiService
         var response = await HttpClient.GetStringAsync(url);
         return JsonSerializer.Deserialize<AssetsModel>(response)!;
     }
+
+    public static async Task<AssetsModel> GetSearchResults(string searchText)
+    {
+        var url = $"https://api.coincap.io/v2/assets?search={searchText}";
+        var response = await HttpClient.GetStringAsync(url);
+        return JsonSerializer.Deserialize<AssetsModel>(response)!;
+    }
 }

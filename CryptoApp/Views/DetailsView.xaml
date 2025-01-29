@@ -12,6 +12,10 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <ContentControl Content="{Binding SelectedViewModel }"/>
-        <TextBox Grid.Row="0" HorizontalAlignment="Center" Text="Crypto details" MaxHeight="100" FontSize="18" BorderThickness="0" />
+        <StackPanel Grid.Row="0" VerticalAlignment="Top" Height="Auto" Orientation="Vertical">
+            <TextBox HorizontalAlignment="Center" VerticalAlignment="Top" Text="Crypto details" MaxHeight="100" FontSize="18" BorderThickness="0" />
+            <TextBox Margin="10 10 10 0" MaxWidth="" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+            <ListBox ItemsSource="{Binding FilteredItems}" Margin="10 0 10 0" />
+        </StackPanel>
     </Grid>
 </UserControl>
