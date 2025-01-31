@@ -20,7 +20,13 @@ public class MainViewModel : BaseViewModel
     public MainViewModel()
     {
         UpdateViewCommand = new UpdateViewCommand(this);
+        CloseWindowCommand = new CloseWindowCommand();
+        MinimizeWindowCommand = new MinimizeWindowCommand();
     }
 
     public ICommand UpdateViewCommand { get; set; }
+    
+    public ICommand CloseWindowCommand { get; set; }
+    
+    public ICommand MinimizeWindowCommand { get; set; }
 }
