@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Globalization;
 using CryptoApp.Models;
 using CryptoApp.Services;
 
@@ -6,17 +7,17 @@ namespace CryptoApp.ViewModels;
 
 public class HomeViewModel : BaseViewModel
 {
-    private AssetsModel _assetsModel;
+    private AssetsModel _assetsModel = new();
 
-    private ObservableCollection<string> _topChartsStrings = [];
+    private ObservableCollection<TopChartsTable> _topChartsTable = [];
 
-    public ObservableCollection<string> TopChartsStrings
+    public ObservableCollection<TopChartsTable> TopChartsTable
     {
-        get => _topChartsStrings;
+        get => _topChartsTable;
         set
         {
-            _topChartsStrings = value;
-            OnPropertyChanged(nameof(TopChartsStrings));
+            _topChartsTable = value;
+            OnPropertyChanged(nameof(TopChartsTable));
         }
     }
 
@@ -35,12 +36,15 @@ public class HomeViewModel : BaseViewModel
             return;
         }
         
-        TopChartsStrings.Clear();
+        TopChartsTable.Clear();
         
         for (var i = 0; i < data.Count; i++)
         {
-            var coinInfo = $"{i + 1}. {data[i].Name} ({data[i].Symbol}) Price:{data[i].PriceUsd}$";
-            TopChartsStrings.Add(coinInfo);
+            var rank = int.Parse(data[i].Rank!);
+            var currencyName = data[i].Name + $" ({data[i].Symbol})";
+            var price = decimal.Parse(data[i].PriceUsd!, CultureInfo.InvariantCulture);
+            var changes = decimal.Parse(data[i].ChangePercent24Hr!, CultureInfo.InvariantCulture);
+            TopChartsTable.Add(new TopChartsTable(rank, currencyName, price, changes));
         }
     }
 }

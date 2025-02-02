@@ -8,14 +8,42 @@
       Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        
         <ContentControl Content="{Binding SelectedViewModel }"/>
-        <StackPanel Grid.Row="0" VerticalAlignment="Top" Height="Auto" Orientation="Vertical">
-            <TextBox HorizontalAlignment="Center" VerticalAlignment="Top" Text="Crypto details" MaxHeight="100" FontSize="18" BorderThickness="0" />
+        
+        <StackPanel Grid.Row="0" VerticalAlignment="Top" Height="Auto" Orientation="Vertical" ZIndex="2">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Text="Crypto details" MaxHeight="100" FontSize="18" Foreground="White" />
             <TextBox Margin="10 10 10 0" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
             <ListBox ItemsSource="{Binding FilteredItems}" Margin="10 0 10 0" />
         </StackPanel>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Border CornerRadius="5" Background="#27274A" Padding="0" Margin="10" Height="Auto">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock HorizontalAlignment="Center" FontSize="28" Text="{Binding DetailsText.CurrencyName}" Foreground="White"/>
+                    <TextBlock FontSize="20" Text="{Binding DetailsText.CodeSymbolText}" Foreground="White"/>
+                    <TextBlock FontSize="20" Text="{Binding DetailsText.RankText}" Foreground="White"/>
+                    <TextBlock FontSize="20" Text="{Binding DetailsText.PriceText}" Foreground="White"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.SupplyText}" Foreground="White"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.MarketCapUsdText}" Foreground="White"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.VolumeUsd24HrText}" Foreground="White"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.ChangePercent24HrText}" Foreground="White"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.Vwap24HrText}" Foreground="White"/>
+                    <TextBlock FontSize="20" Foreground="White">
+                        <Hyperlink Command="{Binding OpenLinkCommand}" CommandParameter="{Binding DetailsText.ExplorerText}">
+                            <Run Text="{Binding LinkText}"/>
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

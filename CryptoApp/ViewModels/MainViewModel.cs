@@ -22,6 +22,7 @@ public class MainViewModel : BaseViewModel
         UpdateViewCommand = new UpdateViewCommand(this);
         CloseWindowCommand = new CloseWindowCommand();
         MinimizeWindowCommand = new MinimizeWindowCommand();
+        MoveWindowCommand = new MoveWindowCommand();
     }
 
     public ICommand UpdateViewCommand { get; set; }
@@ -29,4 +30,6 @@ public class MainViewModel : BaseViewModel
     public ICommand CloseWindowCommand { get; set; }
     
     public ICommand MinimizeWindowCommand { get; set; }
+    
+    public ICommand MoveWindowCommand { get; set; }
 }

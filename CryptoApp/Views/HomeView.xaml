@@ -5,15 +5,57 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:CryptoApp.Views"
       mc:Ignorable="d"
-      Height="450" Width="800">
+      Height="430" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="35" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <ContentControl Content="{Binding SelectedViewModel }"/>
-        <TextBox Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Top" Text="Top 10 cryptos" MaxHeight="100" FontSize="25" BorderThickness="0" />
-        <ListBox Grid.Row="1" BorderThickness="0" FontSize="20" ItemsSource="{Binding TopChartsStrings}" />
+        <TextBlock Grid.Row="0" 
+                 HorizontalAlignment="Center" 
+                 VerticalAlignment="Top" 
+                 Text="Top 10 crypto-currencies" 
+                 FontSize="25" 
+                 Background="Transparent"
+                 Foreground="White"/>
+        
+        
+        <DataGrid Grid.Row="1" 
+                  ItemsSource="{Binding TopChartsTable}" 
+                  AutoGenerateColumns="False"
+                  Background="Transparent"
+                  Foreground="White"
+                  BorderThickness="1"
+                  FontSize="18"
+                  CanUserResizeColumns="False"
+                  CanUserResizeRows="False"
+                  CanUserSortColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  CanUserReorderColumns="False"
+                  IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Top" Binding="{Binding Top}" Width="40"/>
+                <DataGridTextColumn Header="Currency" Binding="{Binding Currency}" Width="220"/>
+                <DataGridTextColumn Header="Price (USD)" Binding="{Binding Price}" Width="538"/>
+            </DataGrid.Columns>
+
+            <DataGrid.Resources>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Style>
+                <Style TargetType="DataGridRowHeader">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Style>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="Transparent"/>
+                </Style>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderBrush" Value="#484765"/>
+                    <Setter Property="BorderThickness" Value="0.5"/>
+                </Style>
+            </DataGrid.Resources>
+        </DataGrid>
     </Grid>
 </UserControl>
