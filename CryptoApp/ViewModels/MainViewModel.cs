@@ -16,6 +16,14 @@ public class MainViewModel : BaseViewModel
             OnPropertyChanged(nameof(SelectedViewModel));
         }
     }
+    
+    public ICommand UpdateViewCommand { get; }
+    
+    public ICommand CloseWindowCommand { get; }
+    
+    public ICommand MinimizeWindowCommand { get; }
+    
+    public ICommand MoveWindowCommand { get; }
 
     public MainViewModel()
     {
@@ -24,12 +32,4 @@ public class MainViewModel : BaseViewModel
         MinimizeWindowCommand = new MinimizeWindowCommand();
         MoveWindowCommand = new MoveWindowCommand();
     }
-
-    public ICommand UpdateViewCommand { get; set; }
-    
-    public ICommand CloseWindowCommand { get; set; }
-    
-    public ICommand MinimizeWindowCommand { get; set; }
-    
-    public ICommand MoveWindowCommand { get; set; }
 }

@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CryptoApp"
         mc:Ignorable="d"
         Title="CryptoApp" Height="500" Width="900"
         WindowStyle="None"
@@ -18,7 +17,8 @@
         
         <Grid Background="#0F0F2D">
             <Grid.InputBindings>
-                <MouseBinding Gesture="LeftClick" Command="{Binding MoveWindowCommand}" />
+                <MouseBinding Gesture="LeftClick" 
+                              Command="{Binding MoveWindowCommand}" />
             </Grid.InputBindings>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
@@ -153,7 +153,10 @@
             </Button>
         </Grid>
         
-        <Grid Grid.Row="1" Background="#181735"></Grid>
-        <ContentControl Grid.Row="1" Content="{Binding SelectedViewModel }"/>
+        <Grid Grid.Row="1" 
+              Background="#181735"/>
+        
+        <ContentControl Grid.Row="1" 
+                        Content="{Binding SelectedViewModel }"/>
     </Grid>
 </Window>

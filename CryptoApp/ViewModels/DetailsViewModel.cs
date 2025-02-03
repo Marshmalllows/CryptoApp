@@ -11,6 +11,12 @@ public class DetailsViewModel : BaseViewModel
 {
     private string _searchText = "Search...";
     
+    private string _linkText = "";
+    
+    private ObservableCollection<string> _filteredItems = [];
+    
+    private DetailsText? _detailsText;
+    
     public string SearchText
     {
         get => _searchText;
@@ -22,8 +28,6 @@ public class DetailsViewModel : BaseViewModel
         }
     }
     
-    private string _linkText = "";
-    
     public string LinkText
     {
         get => _linkText;
@@ -33,12 +37,6 @@ public class DetailsViewModel : BaseViewModel
             OnPropertyChanged(nameof(LinkText));
         }
     }
-
-    public ICommand OpenLinkCommand { get; }
-
-    public ICommand ItemSelectedCommand { get; }
-
-    private ObservableCollection<string> _filteredItems = [];
     
     public ObservableCollection<string> FilteredItems
     {
@@ -49,15 +47,7 @@ public class DetailsViewModel : BaseViewModel
             OnPropertyChanged(nameof(FilteredItems));
         }
     }
-
-    private DetailsText? _detailsText;
-
-    public DetailsViewModel()
-    {
-        OpenLinkCommand = new OpenLinkCommand();
-        ItemSelectedCommand = new ItemSelectedCommand(this);
-    }
-
+    
     public DetailsText? DetailsText
     {
         get => _detailsText;
@@ -66,6 +56,16 @@ public class DetailsViewModel : BaseViewModel
             _detailsText = value;
             OnPropertyChanged(nameof(DetailsText));
         }
+    }
+    
+    public ICommand OpenLinkCommand { get; }
+
+    public ICommand ItemSelectedCommand { get; }
+
+    public DetailsViewModel()
+    {
+        OpenLinkCommand = new OpenLinkCommand();
+        ItemSelectedCommand = new ItemSelectedCommand(this);
     }
     
     private async void RefreshItems()
@@ -112,7 +112,6 @@ public class DetailsViewModel : BaseViewModel
         var supply = data.Supply ?? "no data :(";
         var capitalisation = data.MarketCapUsd ?? "no data :(";
         var volume = data.VolumeUsd24Hr ?? "no data :(";
-        var change = data.ChangePercent24Hr ?? "no data :(";
         var vwap = data.Vwap24Hr ?? "no data :(";
         var changeString = "Last 24h price change: ";
 
@@ -148,6 +147,10 @@ public class DetailsViewModel : BaseViewModel
                     changeString += " 📉";
                     break;
             }
+        }
+        else
+        {
+            changeString += "no data :(";
         }
         
         DetailsText = new DetailsText(name, symbol, rank, price, supply, capitalisation, volume, changeString, vwap,

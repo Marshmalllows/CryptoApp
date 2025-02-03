@@ -35,16 +35,16 @@ public class HomeViewModel : BaseViewModel
         {
             return;
         }
-        
+
         TopChartsTable.Clear();
-        
-        for (var i = 0; i < data.Count; i++)
+
+        foreach (var t in data)
         {
-            var rank = int.Parse(data[i].Rank!);
-            var currencyName = data[i].Name + $" ({data[i].Symbol})";
-            var price = decimal.Parse(data[i].PriceUsd!, CultureInfo.InvariantCulture).ToString("G10");
-            var changes = decimal.Parse(data[i].ChangePercent24Hr!, CultureInfo.InvariantCulture).ToString("G10");
-            var capitalisation = decimal.Parse(data[i].MarketCapUsd!, CultureInfo.InvariantCulture).ToString("G10");
+            var rank = int.Parse(t.Rank!);
+            var currencyName = t.Name + $" ({t.Symbol})";
+            var price = decimal.Parse(t.PriceUsd!, CultureInfo.InvariantCulture).ToString("G10");
+            var changes = decimal.Parse(t.ChangePercent24Hr!, CultureInfo.InvariantCulture).ToString("G10");
+            var capitalisation = decimal.Parse(t.MarketCapUsd!, CultureInfo.InvariantCulture).ToString("G10");
             TopChartsTable.Add(new TopChartsTable(rank, currencyName, price, changes, capitalisation));
         }
     }

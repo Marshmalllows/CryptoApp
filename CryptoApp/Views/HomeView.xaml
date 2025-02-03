@@ -3,7 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:CryptoApp.Views"
       mc:Ignorable="d"
       Height="430" Width="800">
     <Grid>
@@ -11,14 +10,16 @@
             <RowDefinition Height="35" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        
         <ContentControl Content="{Binding SelectedViewModel }"/>
+        
         <TextBlock Grid.Row="0" 
-                 HorizontalAlignment="Center" 
-                 VerticalAlignment="Top" 
-                 Text="Top 10 crypto-currencies" 
-                 FontSize="25" 
-                 Background="Transparent"
-                 Foreground="White"/>
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Top" 
+                   Text="Top 10 crypto-currencies" 
+                   FontSize="25" 
+                   Background="Transparent"
+                   Foreground="White"/>
         
         <DataGrid Grid.Row="1" ItemsSource="{Binding TopChartsTable}" 
                   AutoGenerateColumns="False"

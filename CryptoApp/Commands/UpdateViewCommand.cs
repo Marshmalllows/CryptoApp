@@ -5,8 +5,6 @@ namespace CryptoApp.Commands;
 
 public class UpdateViewCommand(MainViewModel viewModel) : ICommand
 {
-    private MainViewModel _viewModel = viewModel;
-
     public bool CanExecute(object? parameter)
     {
         return true;
@@ -16,11 +14,11 @@ public class UpdateViewCommand(MainViewModel viewModel) : ICommand
     {
         if (parameter!.ToString() == "Home")
         {
-            _viewModel.SelectedViewModel = new HomeViewModel();
+            viewModel.SelectedViewModel = new HomeViewModel();
         }
         else if (parameter.ToString() == "Details")
         {
-            _viewModel.SelectedViewModel = new DetailsViewModel();
+            viewModel.SelectedViewModel = new DetailsViewModel();
         }
     }
 
