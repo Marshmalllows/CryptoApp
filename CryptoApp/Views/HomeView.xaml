@@ -20,13 +20,10 @@
                  Background="Transparent"
                  Foreground="White"/>
         
-        
-        <DataGrid Grid.Row="1" 
-                  ItemsSource="{Binding TopChartsTable}" 
+        <DataGrid Grid.Row="1" ItemsSource="{Binding TopChartsTable}" 
                   AutoGenerateColumns="False"
                   Background="Transparent"
                   Foreground="White"
-                  BorderThickness="1"
                   FontSize="18"
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
@@ -35,27 +32,71 @@
                   CanUserDeleteRows="False"
                   CanUserReorderColumns="False"
                   IsReadOnly="True">
+            <DataGrid.Style>
+                <Style TargetType="DataGrid">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="HeadersVisibility" Value="Column" />
+                    <Setter Property="Margin" Value="0 10 0 0" />
+                    <Setter Property="GridLinesVisibility" Value="None" />
+                    <Setter Property="ColumnWidth" Value="*" />
+                    <Style.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsGrouping" Value="true"/>
+                                <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                        </MultiTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.Style>
+            
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Padding" Value="5 0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="SnapsToDevicePixels" Value="true"/>
+                    <Setter Property="Foreground" Value="LightGray"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Margin" Value="0 5 0 0" />
+                    <Setter Property="Background" Value="#27274A"/>
+                    <Setter Property="SnapsToDevicePixels" Value="true"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="False" />
+                        <Trigger Property="IsSelected" Value="False" />
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+            
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Margin" Value="3"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Top" Binding="{Binding Top}" Width="40"/>
+                <DataGridTextColumn Header="№" Binding="{Binding Top}" Width="40"/>
                 <DataGridTextColumn Header="Currency" Binding="{Binding Currency}" Width="220"/>
-                <DataGridTextColumn Header="Price (USD)" Binding="{Binding Price}" Width="538"/>
+                <DataGridTextColumn Header="Price (USDT)" Binding="{Binding Price}" Width="130"/>
+                <DataGridTextColumn Header="Changes in price (24h)" Binding="{Binding Change}" Width="*"/>
+                <DataGridTextColumn Header="Capitalisation (USDT)" Binding="{Binding Capitalisation}" Width="*"/>
             </DataGrid.Columns>
 
-            <DataGrid.Resources>
-                <Style TargetType="DataGridRow">
-                    <Setter Property="Background" Value="Transparent"/>
-                </Style>
-                <Style TargetType="DataGridRowHeader">
-                    <Setter Property="Background" Value="Transparent"/>
-                </Style>
-                <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="Background" Value="Transparent"/>
-                </Style>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="BorderBrush" Value="#484765"/>
-                    <Setter Property="BorderThickness" Value="0.5"/>
-                </Style>
-            </DataGrid.Resources>
         </DataGrid>
     </Grid>
 </UserControl>

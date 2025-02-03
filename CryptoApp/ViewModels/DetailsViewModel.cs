@@ -34,7 +34,9 @@ public class DetailsViewModel : BaseViewModel
         }
     }
 
-    public ICommand OpenLinkCommand { get; } = new OpenLinkCommand();
+    public ICommand OpenLinkCommand { get; }
+
+    public ICommand ItemSelectedCommand { get; }
 
     private ObservableCollection<string> _filteredItems = [];
     
@@ -49,7 +51,13 @@ public class DetailsViewModel : BaseViewModel
     }
 
     private DetailsText? _detailsText;
-    
+
+    public DetailsViewModel()
+    {
+        OpenLinkCommand = new OpenLinkCommand();
+        ItemSelectedCommand = new ItemSelectedCommand(this);
+    }
+
     public DetailsText? DetailsText
     {
         get => _detailsText;
@@ -81,13 +89,13 @@ public class DetailsViewModel : BaseViewModel
         {
             FilteredItems.Add(assets.Data[i].Name! + $" ({assets.Data[i].Symbol})");
         }
-        
-        ShowDetails();
     }
 
-    private async void ShowDetails()
+    public async void ShowDetails()
     {
-        var details = await ApiService.GetSearchResultsAsync(SearchText);
+        var search = SearchText.Split('(').First();
+        
+        var details = await ApiService.GetSearchResultsAsync(search);
 
         if (details.Data is null || details.Data.Count == 0)
         {

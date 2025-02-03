@@ -8,19 +8,26 @@
       Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
         <ContentControl Content="{Binding SelectedViewModel }"/>
         
-        <StackPanel Grid.Row="0" VerticalAlignment="Top" Height="Auto" Orientation="Vertical" ZIndex="2">
+        <StackPanel Grid.Row="0" VerticalAlignment="Top" Height="Auto" Orientation="Vertical" ZIndex="1">
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Text="Crypto details" MaxHeight="100" FontSize="18" Foreground="White" />
-            <TextBox Margin="10 10 10 0" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
-            <ListBox ItemsSource="{Binding FilteredItems}" Margin="10 0 10 0" />
+            <TextBox Margin="10 10 10 0" Padding="10" FontSize="15" BorderThickness="0" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
+            <ListBox ItemsSource="{Binding FilteredItems}" BorderThickness="0" Margin="10 0 10 0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding}" 
+                                Command="{Binding DataContext.ItemSelectedCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                CommandParameter="{Binding}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </StackPanel>
         
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="0" Margin="0 80 0 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>

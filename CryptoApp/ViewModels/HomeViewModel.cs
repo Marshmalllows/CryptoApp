@@ -42,9 +42,10 @@ public class HomeViewModel : BaseViewModel
         {
             var rank = int.Parse(data[i].Rank!);
             var currencyName = data[i].Name + $" ({data[i].Symbol})";
-            var price = decimal.Parse(data[i].PriceUsd!, CultureInfo.InvariantCulture);
-            var changes = decimal.Parse(data[i].ChangePercent24Hr!, CultureInfo.InvariantCulture);
-            TopChartsTable.Add(new TopChartsTable(rank, currencyName, price, changes));
+            var price = decimal.Parse(data[i].PriceUsd!, CultureInfo.InvariantCulture).ToString("G10");
+            var changes = decimal.Parse(data[i].ChangePercent24Hr!, CultureInfo.InvariantCulture).ToString("G10");
+            var capitalisation = decimal.Parse(data[i].MarketCapUsd!, CultureInfo.InvariantCulture).ToString("G10");
+            TopChartsTable.Add(new TopChartsTable(rank, currencyName, price, changes, capitalisation));
         }
     }
 }
