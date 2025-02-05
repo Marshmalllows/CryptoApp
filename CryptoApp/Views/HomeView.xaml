@@ -19,12 +19,12 @@
                    Text="Top 10 crypto-currencies" 
                    FontSize="25" 
                    Background="Transparent"
-                   Foreground="White"/>
+                   Foreground="{DynamicResource ForegroundColor}"/>
         
         <DataGrid Grid.Row="1" ItemsSource="{Binding TopChartsTable}" 
                   AutoGenerateColumns="False"
                   Background="Transparent"
-                  Foreground="White"
+                  Foreground="{DynamicResource ForegroundColor}"
                   FontSize="18"
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
@@ -36,7 +36,7 @@
             <DataGrid.Style>
                 <Style TargetType="DataGrid">
                     <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="Foreground" Value="Black"/>
+                    <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
                     <Setter Property="BorderThickness" Value="0"/>
                     <Setter Property="HeadersVisibility" Value="Column" />
                     <Setter Property="Margin" Value="0 10 0 0" />
@@ -59,14 +59,14 @@
                     <Setter Property="Padding" Value="5 0"/>
                     <Setter Property="Background" Value="Transparent"/>
                     <Setter Property="SnapsToDevicePixels" Value="true"/>
-                    <Setter Property="Foreground" Value="LightGray"/>
+                    <Setter Property="Foreground" Value="{DynamicResource ThinForegroundColor}"/>
                 </Style>
             </DataGrid.ColumnHeaderStyle>
 
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
                     <Setter Property="Margin" Value="0 5 0 0" />
-                    <Setter Property="Background" Value="#27274A"/>
+                    <Setter Property="Background" Value="{DynamicResource SubBackgroundColor}"/>
                     <Setter Property="SnapsToDevicePixels" Value="true"/>
                     <Style.Triggers>
                         <Trigger Property="IsMouseOver" Value="False" />

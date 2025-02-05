@@ -1,0 +1,12 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="BackgroundColor" Color="#181735"/>
+    <SolidColorBrush x:Key="ForegroundColor" Color="White"/>
+    <SolidColorBrush x:Key="NavigationBarColor" Color="#0F0F2D"/>
+    <SolidColorBrush x:Key="ThinForegroundColor" Color="DarkGray"/>
+    <SolidColorBrush x:Key="MouseOverButtonColor" Color="#27273A"/>
+    <SolidColorBrush x:Key="ListColor" Color="#47476A"/>
+    <SolidColorBrush x:Key="MouseOverListColor" Color="#57577A"/>
+    <SolidColorBrush x:Key="CloseButtonColor" Color="#CD2727"/>
+    <SolidColorBrush x:Key="SubBackgroundColor" Color="#27274A"/>
+</ResourceDictionary>

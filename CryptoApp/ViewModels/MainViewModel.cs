@@ -6,6 +6,8 @@ namespace CryptoApp.ViewModels;
 public class MainViewModel : BaseViewModel
 {
     private BaseViewModel _selectedViewModel = new HomeViewModel();
+    
+    private string _selectedTheme = "LightTheme";
 
     public BaseViewModel SelectedViewModel
     {
@@ -17,6 +19,16 @@ public class MainViewModel : BaseViewModel
         }
     }
     
+    public string SelectedTheme
+    {
+        get => _selectedTheme;
+        set
+        {
+            _selectedTheme = value;
+            OnPropertyChanged(nameof(SelectedTheme));
+        }
+    }
+    
     public ICommand UpdateViewCommand { get; }
     
     public ICommand CloseWindowCommand { get; }
@@ -24,6 +36,9 @@ public class MainViewModel : BaseViewModel
     public ICommand MinimizeWindowCommand { get; }
     
     public ICommand MoveWindowCommand { get; }
+    
+    public ICommand UpdateThemeCommand { get; }
+
 
     public MainViewModel()
     {
@@ -31,5 +46,6 @@ public class MainViewModel : BaseViewModel
         CloseWindowCommand = new CloseWindowCommand();
         MinimizeWindowCommand = new MinimizeWindowCommand();
         MoveWindowCommand = new MoveWindowCommand();
+        UpdateThemeCommand = new UpdateThemeCommand(this);
     }
 }

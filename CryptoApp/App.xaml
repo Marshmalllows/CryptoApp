@@ -5,11 +5,16 @@
              xmlns:viewmodels="clr-namespace:CryptoApp.ViewModels"
              StartupUri="/Views/MainWindow.xaml">
     <Application.Resources>
-         <DataTemplate DataType="{x:Type viewmodels:DetailsViewModel}">
-             <views:DetailsView />
-         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
-            <views:HomeView />
-        </DataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/LightTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate DataType="{x:Type viewmodels:DetailsViewModel}">
+                <views:DetailsView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodels:HomeViewModel}">
+                <views:HomeView />
+            </DataTemplate>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

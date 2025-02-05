@@ -28,14 +28,14 @@
                        Text="Crypto details" 
                        MaxHeight="100" 
                        FontSize="18" 
-                       Foreground="White" />
+                       Foreground="{DynamicResource ForegroundColor}" />
             
             <Grid HorizontalAlignment="Left"
                   Margin="10 10 10 0"
                   Width="780">
                 <TextBlock Margin="20 0" 
                            VerticalAlignment="Center" 
-                           Foreground="LightGray" 
+                           Foreground="{DynamicResource ThinForegroundColor}" 
                            IsHitTestVisible="False"
                            Panel.ZIndex="1" 
                            Text="Search here..."
@@ -43,8 +43,8 @@
                            Visibility="{Binding ElementName=TextBoxSearch, Path=Text.IsEmpty, Converter={StaticResource BoolToVis}}" />
                 
                 <TextBox Name="TextBoxSearch"
-                         Background="#27274A"
-                         Foreground="White"
+                         Background="{DynamicResource SubBackgroundColor}"
+                         Foreground="{DynamicResource ForegroundColor}"
                          BorderThickness="0"
                          FontSize="17"
                          Padding="15 10"
@@ -75,7 +75,7 @@
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}" />
                         <Setter Property="BorderThickness" Value="0" />
                         <Setter Property="Template">
                             <Setter.Value>
@@ -91,11 +91,11 @@
                         <Style.Triggers>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="Foreground" Value="LightGray" />
+                                <Setter Property="Foreground" Value="{DynamicResource ThinForegroundColor}" />
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="Foreground" Value="LightGray" />
+                                <Setter Property="Foreground" Value="{DynamicResource ThinForegroundColor}" />
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -109,14 +109,14 @@
                                 Width="780">
                             <Button.Style>
                                 <Style TargetType="Button">
-                                    <Setter Property="Background" Value="#47476A" />
+                                    <Setter Property="Background" Value="{DynamicResource ListColor}" />
                                     <Setter Property="Cursor" Value="Hand"/>
                                     <Setter Property="FontSize" Value="15"/>
                                     <Setter Property="Margin" Value="0 0 0 5"/>
-                                    <Setter Property="Foreground" Value="LightGray"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource ThinForegroundColor}"/>
                                     <Style.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#57577A"/>
+                                            <Setter Property="Background" Value="{DynamicResource MouseOverListColor}"/>
                                         </Trigger>
                                     </Style.Triggers>
                                 </Style>
@@ -130,7 +130,7 @@
                                             Background="{TemplateBinding Background}">
                                         <ContentPresenter VerticalAlignment="Center" 
                                                           HorizontalAlignment="Left" 
-                                                          Margin="10,3,3,0" /> 
+                                                          Margin="10,3,3,3" /> 
                                     </Border>
                                 </ControlTemplate>
                             </Button.Template>
@@ -141,27 +141,26 @@
         </StackPanel>
         <Grid Grid.Row="0" Margin="0 80 0 0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="450"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
             <Border CornerRadius="5" 
-                    Background="#27274A" 
-                    Padding="10" 
+                    Background="{DynamicResource SubBackgroundColor}" 
+                    Padding="20 10 10 20" 
                     Margin="10" 
                     Height="Auto"
                     Visibility="{Binding ElementName=CurrencyName, Path=Text, Converter={StaticResource StringToVisibilityConverter}}">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock x:Name="CurrencyName" HorizontalAlignment="Center" FontSize="28" Text="{Binding DetailsText.CurrencyName}" Foreground="White" Margin="0,0,0,10"/>
-                    <TextBlock FontSize="20" Text="{Binding DetailsText.CodeSymbolText}" Foreground="White" Margin="0,0,0,6"/>
-                    <TextBlock FontSize="20" Text="{Binding DetailsText.RankText}" Foreground="White" Margin="0,0,0,6"/>
-                    <TextBlock FontSize="18" Text="{Binding DetailsText.PriceText}" Foreground="White" Margin="0,0,0,6"/>
-                    <TextBlock FontSize="18" Text="{Binding DetailsText.SupplyText}" Foreground="White" Margin="0,0,0,8"/>
-                    <TextBlock FontSize="18" Text="{Binding DetailsText.MarketCapUsdText}" Foreground="White" Margin="0,0,0,6"/>
-                    <TextBlock FontSize="18" Text="{Binding DetailsText.VolumeUsd24HrText}" Foreground="White" Margin="0,0,0,6"/>
-                    <TextBlock FontSize="18" Text="{Binding DetailsText.ChangePercent24HrText}" Foreground="White" Margin="0,0,0,6"/>
-                    <TextBlock FontSize="18" Text="{Binding DetailsText.Vwap24HrText}" Foreground="White" Margin="0,0,0,6"/>
-                    <TextBlock FontSize="20" Foreground="White" Margin="0,0,0,8">
+                    <TextBlock x:Name="CurrencyName" HorizontalAlignment="Center" FontSize="28" Text="{Binding DetailsText.CurrencyName}" Foreground="{DynamicResource ForegroundColor}" Margin="0,0,0,10"/>
+                    <TextBlock FontSize="20" Text="{Binding DetailsText.CodeSymbolText}" Foreground="{DynamicResource ForegroundColor}" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="20" Text="{Binding DetailsText.RankText}" Foreground="{DynamicResource ForegroundColor}" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.PriceText}" Foreground="{DynamicResource ForegroundColor}" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.SupplyText}" Foreground="{DynamicResource ForegroundColor}" Margin="0,0,0,8"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.MarketCapUsdText}" Foreground="{DynamicResource ForegroundColor}" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.VolumeUsd24HrText}" Foreground="{DynamicResource ForegroundColor}" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.ChangePercent24HrText}" Foreground="{DynamicResource ForegroundColor}" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.Vwap24HrText}" Foreground="{DynamicResource ForegroundColor}" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="20" Foreground="{DynamicResource ForegroundColor}" Margin="0,0,0, 6">
                         <Hyperlink Command="{Binding OpenLinkCommand}" CommandParameter="{Binding DetailsText.ExplorerText}">
                             <Run Text="{Binding LinkText}"/>
                         </Hyperlink>

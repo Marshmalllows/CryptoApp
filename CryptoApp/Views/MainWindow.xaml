@@ -15,13 +15,14 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         
-        <Grid Background="#0F0F2D">
+        <Grid Background="{DynamicResource NavigationBarColor}">
             <Grid.InputBindings>
                 <MouseBinding Gesture="LeftClick" 
                               Command="{Binding MoveWindowCommand}" />
             </Grid.InputBindings>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="80"/>
@@ -34,7 +35,7 @@
                        Grid.Column="1" 
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
-                       Foreground="White" />
+                       Foreground="{DynamicResource ForegroundColor}" />
             
             <Button Grid.Column="2" 
                     Content="Home" 
@@ -42,12 +43,12 @@
                     CommandParameter="Home">
                 <Button.Style>
                     <Style TargetType="Button">
-                        <Setter Property="Foreground" Value="LightGray"/>
+                        <Setter Property="Foreground" Value="{DynamicResource ThinForegroundColor}"/>
                         <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="Cursor" Value="Hand"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True" >
-                                <Setter Property="Background" Value="#27273A" />
+                                <Setter Property="Background" Value="{DynamicResource MouseOverButtonColor}" />
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -70,12 +71,12 @@
                     CommandParameter="Details">
                 <Button.Style>
                     <Style TargetType="Button">
-                        <Setter Property="Foreground" Value="LightGray"/>
+                        <Setter Property="Foreground" Value="{DynamicResource ThinForegroundColor}"/>
                         <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="Cursor" Value="Hand"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True" >
-                                <Setter Property="Background" Value="#27273A" />
+                                <Setter Property="Background" Value="{DynamicResource MouseOverButtonColor}" />
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -92,18 +93,45 @@
                 </Button.Template>
             </Button>
             
-            <Button Grid.Column="5" 
+            <Button Grid.Column="4" 
+                    Content="Theme" 
+                    Command="{Binding UpdateThemeCommand}" >
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Foreground" Value="{DynamicResource ThinForegroundColor}"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True" >
+                                <Setter Property="Background" Value="{DynamicResource MouseOverButtonColor}" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderThickness="0"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center"
+                                              HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            
+            <Button Grid.Column="6" 
                     Content="–" 
                     Command="{Binding MinimizeWindowCommand}" 
                     FontSize="16">
                 <Button.Style>
                     <Style TargetType="Button">
-                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
                         <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="Cursor" Value="Hand"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True" >
-                                <Setter Property="Background" Value="#27273A" />
+                                <Setter Property="Background" Value="{DynamicResource MouseOverButtonColor}" />
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -122,18 +150,18 @@
                 </Button.Template>
             </Button>
             
-            <Button Grid.Column="6" 
+            <Button Grid.Column="7" 
                     Content="×" 
                     Command="{Binding CloseWindowCommand}" 
                     FontSize="16">
                 <Button.Style>
                     <Style TargetType="Button">
-                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Foreground" Value="{DynamicResource ForegroundColor}"/>
                         <Setter Property="Background" Value="Transparent"/>
                         <Setter Property="Cursor" Value="Hand"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True" >
-                                <Setter Property="Background" Value="#CD2727" />
+                                <Setter Property="Background" Value="{DynamicResource CloseButtonColor}" />
                             </Trigger>
                         </Style.Triggers>
                     </Style>
@@ -154,7 +182,7 @@
         </Grid>
         
         <Grid Grid.Row="1" 
-              Background="#181735"/>
+              Background="{DynamicResource BackgroundColor}"/>
         
         <ContentControl Grid.Row="1" 
                         Content="{Binding SelectedViewModel }"/>
