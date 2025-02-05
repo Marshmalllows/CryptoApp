@@ -9,7 +9,7 @@ namespace CryptoApp.ViewModels;
 
 public class DetailsViewModel : BaseViewModel
 {
-    private string _searchText = "Search...";
+    private string _searchText = "";
     
     private string _linkText = "";
     
@@ -85,7 +85,7 @@ public class DetailsViewModel : BaseViewModel
             return;
         }
         
-        for (var i = 0; i < assets.Data.Count && i < 10; i++)
+        for (var i = 0; i < assets.Data.Count && i < 5; i++)
         {
             FilteredItems.Add(assets.Data[i].Name! + $" ({assets.Data[i].Symbol})");
         }
@@ -136,7 +136,7 @@ public class DetailsViewModel : BaseViewModel
 
         if (data.ChangePercent24Hr is not null)
         {
-            changeString = $"{decimal.Parse(data.ChangePercent24Hr, CultureInfo.InvariantCulture):G10}%";
+            changeString += $"{decimal.Parse(data.ChangePercent24Hr, CultureInfo.InvariantCulture):G10}%";
 
             switch (decimal.Parse(data.ChangePercent24Hr, CultureInfo.InvariantCulture))
             {

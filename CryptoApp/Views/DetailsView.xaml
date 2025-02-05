@@ -3,8 +3,13 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:converters="clr-namespace:CryptoApp.Converters"
       mc:Ignorable="d"
       Height="450" Width="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -17,76 +22,147 @@
                     Height="Auto" 
                     Orientation="Vertical" 
                     ZIndex="1">
+            
             <TextBlock HorizontalAlignment="Center" 
                        VerticalAlignment="Top" 
                        Text="Crypto details" 
                        MaxHeight="100" 
                        FontSize="18" 
                        Foreground="White" />
-            <TextBox Margin="10 10 10 0" 
-                     Padding="10" 
-                     FontSize="15" 
-                     BorderThickness="0" 
-                     Text="{Binding SearchText, 
-                     UpdateSourceTrigger=PropertyChanged}" />
+            
+            <Grid HorizontalAlignment="Left"
+                  Margin="10 10 10 0"
+                  Width="780">
+                <TextBlock Margin="20 0" 
+                           VerticalAlignment="Center" 
+                           Foreground="LightGray" 
+                           IsHitTestVisible="False"
+                           Panel.ZIndex="1" 
+                           Text="Search here..."
+                           FontSize="17"
+                           Visibility="{Binding ElementName=TextBoxSearch, Path=Text.IsEmpty, Converter={StaticResource BoolToVis}}" />
+                
+                <TextBox Name="TextBoxSearch"
+                         Background="#27274A"
+                         Foreground="White"
+                         BorderThickness="0"
+                         FontSize="17"
+                         Padding="15 10"
+                         VerticalAlignment="Center"
+                         Margin="0 3 0 3"
+                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.Template>
+                        <ControlTemplate TargetType="TextBoxBase">
+                            <Border CornerRadius="5" 
+                                    Background="{TemplateBinding Background}" 
+                                    SnapsToDevicePixels="True" 
+                                    BorderThickness="0">
+                                <ScrollViewer x:Name="PART_ContentHost" 
+                                              Focusable="false" 
+                                              HorizontalScrollBarVisibility="Hidden" 
+                                              VerticalScrollBarVisibility="Hidden"/>
+                            </Border>
+                        </ControlTemplate>
+                    </TextBox.Template>
+                </TextBox>
+            </Grid>
+            
             <ListBox ItemsSource="{Binding FilteredItems}" 
                      BorderThickness="0" 
-                     Margin="10 0 10 0">
+                     Background="Transparent"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border Background="{TemplateBinding Background}" 
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                        <ContentPresenter HorizontalAlignment="Stretch" VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Foreground" Value="LightGray" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Foreground" Value="LightGray" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Button Content="{Binding}" 
                                 Command="{Binding DataContext.ItemSelectedCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                                CommandParameter="{Binding}" />
+                                CommandParameter="{Binding}" 
+                                Width="780">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#47476A" />
+                                    <Setter Property="Cursor" Value="Hand"/>
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="Margin" Value="0 0 0 5"/>
+                                    <Setter Property="Foreground" Value="LightGray"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#57577A"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Width="780" 
+                                            Height="35" 
+                                            CornerRadius="5" 
+                                            Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center" 
+                                                          HorizontalAlignment="Left" 
+                                                          Margin="10,3,3,0" /> 
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </StackPanel>
-        
-        <Grid Grid.Row="0" 
-              Margin="0 80 0 0">
+        <Grid Grid.Row="0" Margin="0 80 0 0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="450"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
             <Border CornerRadius="5" 
                     Background="#27274A" 
-                    Padding="0" 
+                    Padding="10" 
                     Margin="10" 
-                    Height="Auto">
+                    Height="Auto"
+                    Visibility="{Binding ElementName=CurrencyName, Path=Text, Converter={StaticResource StringToVisibilityConverter}}">
                 <StackPanel Orientation="Vertical">
-                    <TextBlock HorizontalAlignment="Center" 
-                               FontSize="28" 
-                               Text="{Binding DetailsText.CurrencyName}" 
-                               Foreground="White"/>
-                    <TextBlock FontSize="20" 
-                               Text="{Binding DetailsText.CodeSymbolText}" 
-                               Foreground="White"/>
-                    <TextBlock FontSize="20" 
-                               Text="{Binding DetailsText.RankText}" 
-                               Foreground="White"/>
-                    <TextBlock FontSize="20" 
-                               Text="{Binding DetailsText.PriceText}" 
-                               Foreground="White"/>
-                    <TextBlock FontSize="18" 
-                               Text="{Binding DetailsText.SupplyText}" 
-                               Foreground="White"/>
-                    <TextBlock FontSize="18" 
-                               Text="{Binding DetailsText.MarketCapUsdText}" 
-                               Foreground="White"/>
-                    <TextBlock FontSize="18" 
-                               Text="{Binding DetailsText.VolumeUsd24HrText}" 
-                               Foreground="White"/>
-                    <TextBlock FontSize="18" 
-                               Text="{Binding DetailsText.ChangePercent24HrText}" 
-                               Foreground="White"/>
-                    <TextBlock FontSize="18" 
-                               Text="{Binding DetailsText.Vwap24HrText}" 
-                               Foreground="White"/>
-                    <TextBlock FontSize="20" 
-                               Foreground="White">
-                        <Hyperlink Command="{Binding OpenLinkCommand}" 
-                                   CommandParameter="{Binding DetailsText.ExplorerText}">
+                    <TextBlock x:Name="CurrencyName" HorizontalAlignment="Center" FontSize="28" Text="{Binding DetailsText.CurrencyName}" Foreground="White" Margin="0,0,0,10"/>
+                    <TextBlock FontSize="20" Text="{Binding DetailsText.CodeSymbolText}" Foreground="White" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="20" Text="{Binding DetailsText.RankText}" Foreground="White" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.PriceText}" Foreground="White" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.SupplyText}" Foreground="White" Margin="0,0,0,8"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.MarketCapUsdText}" Foreground="White" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.VolumeUsd24HrText}" Foreground="White" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.ChangePercent24HrText}" Foreground="White" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="18" Text="{Binding DetailsText.Vwap24HrText}" Foreground="White" Margin="0,0,0,6"/>
+                    <TextBlock FontSize="20" Foreground="White" Margin="0,0,0,8">
+                        <Hyperlink Command="{Binding OpenLinkCommand}" CommandParameter="{Binding DetailsText.ExplorerText}">
                             <Run Text="{Binding LinkText}"/>
                         </Hyperlink>
                     </TextBlock>
