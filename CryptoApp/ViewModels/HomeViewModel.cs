@@ -1,5 +1,4 @@
 using System.Collections.ObjectModel;
-using System.Globalization;
 using CryptoApp.Models;
 using CryptoApp.Services;
 
@@ -7,8 +6,6 @@ namespace CryptoApp.ViewModels;
 
 public class HomeViewModel : BaseViewModel
 {
-    private AssetsModel _assetsModel = new();
-
     private ObservableCollection<TopChartsTable> _topChartsTable = [];
 
     public ObservableCollection<TopChartsTable> TopChartsTable
@@ -28,24 +25,25 @@ public class HomeViewModel : BaseViewModel
 
     private async Task LoadDataAsync()
     {
-        _assetsModel = await ApiService.GetAssetsAsync();
-        var data = _assetsModel.Data;
-
-        if (data is null)
+        try
         {
-            return;
+            var data = await ApiService.GetAssetsAsync();
+
+            TopChartsTable.Clear();
+
+            foreach (var t in data)
+            {
+                var rank = t.MarketCapRank ?? 0;
+                var currencyName = t.Name + $" ({t.Symbol?.ToUpper()})";
+                var price = (t.CurrentPrice ?? 0).ToString("G10");
+                var changes = (t.PriceChangePercentage24h ?? 0).ToString("G10");
+                var capitalisation = (t.MarketCap ?? 0).ToString("G10");
+                TopChartsTable.Add(new TopChartsTable(rank, currencyName, price, changes, capitalisation));
+            }
         }
-
-        TopChartsTable.Clear();
-
-        foreach (var t in data)
+        catch
         {
-            var rank = int.Parse(t.Rank!);
-            var currencyName = t.Name + $" ({t.Symbol})";
-            var price = decimal.Parse(t.PriceUsd!, CultureInfo.InvariantCulture).ToString("G10");
-            var changes = decimal.Parse(t.ChangePercent24Hr!, CultureInfo.InvariantCulture).ToString("G10");
-            var capitalisation = decimal.Parse(t.MarketCapUsd!, CultureInfo.InvariantCulture).ToString("G10");
-            TopChartsTable.Add(new TopChartsTable(rank, currencyName, price, changes, capitalisation));
+            // Network error — table stays empty
         }
     }
 }

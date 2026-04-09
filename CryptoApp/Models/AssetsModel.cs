@@ -2,50 +2,55 @@ using System.Text.Json.Serialization;
 
 namespace CryptoApp.Models;
 
-public class CryptoData
+public class CoinMarketData
 {
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    [JsonPropertyName("rank")]
-    public string? Rank { get; set; }
-
-    [JsonPropertyName("symbol")]
-    public string? Symbol { get; set; }
-
-    [JsonPropertyName("name")]
-    public string? Name { get; set; }
-
-    [JsonPropertyName("supply")]
-    public string? Supply { get; set; }
-
-    [JsonPropertyName("maxSupply")]
-    public string? MaxSupply { get; set; }
-
-    [JsonPropertyName("marketCapUsd")]
-    public string? MarketCapUsd { get; set; }
-
-    [JsonPropertyName("volumeUsd24Hr")]
-    public string? VolumeUsd24Hr { get; set; }
-
-    [JsonPropertyName("priceUsd")]
-    public string? PriceUsd { get; set; }
-
-    [JsonPropertyName("changePercent24Hr")]
-    public string? ChangePercent24Hr { get; set; }
-
-    [JsonPropertyName("vwap24Hr")]
-    public string? Vwap24Hr { get; set; }
-
-    [JsonPropertyName("explorer")]
-    public string? Explorer { get; set; }
+    [JsonPropertyName("id")] public string? Id { get; set; }
+    [JsonPropertyName("symbol")] public string? Symbol { get; set; }
+    [JsonPropertyName("name")] public string? Name { get; set; }
+    [JsonPropertyName("current_price")] public decimal? CurrentPrice { get; set; }
+    [JsonPropertyName("market_cap")] public decimal? MarketCap { get; set; }
+    [JsonPropertyName("market_cap_rank")] public int? MarketCapRank { get; set; }
+    [JsonPropertyName("total_volume")] public decimal? TotalVolume { get; set; }
+    [JsonPropertyName("price_change_percentage_24h")] public decimal? PriceChangePercentage24h { get; set; }
+    [JsonPropertyName("circulating_supply")] public decimal? CirculatingSupply { get; set; }
+    [JsonPropertyName("total_supply")] public decimal? TotalSupply { get; set; }
 }
 
-public class AssetsModel
+public class SearchCoin
 {
-    [JsonPropertyName("data")]
-    public List<CryptoData>? Data { get; init; }
+    [JsonPropertyName("id")] public string? Id { get; set; }
+    [JsonPropertyName("name")] public string? Name { get; set; }
+    [JsonPropertyName("symbol")] public string? Symbol { get; set; }
+    [JsonPropertyName("market_cap_rank")] public int? MarketCapRank { get; set; }
+}
 
-    [JsonPropertyName("timestamp")]
-    public long Timestamp { get; init; }
+public class SearchResult
+{
+    [JsonPropertyName("coins")] public List<SearchCoin>? Coins { get; set; }
+}
+
+public class CoinDetails
+{
+    [JsonPropertyName("id")] public string? Id { get; set; }
+    [JsonPropertyName("symbol")] public string? Symbol { get; set; }
+    [JsonPropertyName("name")] public string? Name { get; set; }
+    [JsonPropertyName("market_cap_rank")] public int? MarketCapRank { get; set; }
+    [JsonPropertyName("market_data")] public CoinMarketDetails? MarketData { get; set; }
+    [JsonPropertyName("links")] public CoinLinks? Links { get; set; }
+}
+
+public class CoinMarketDetails
+{
+    [JsonPropertyName("current_price")] public Dictionary<string, decimal>? CurrentPrice { get; set; }
+    [JsonPropertyName("market_cap")] public Dictionary<string, decimal>? MarketCap { get; set; }
+    [JsonPropertyName("total_volume")] public Dictionary<string, decimal>? TotalVolume { get; set; }
+    [JsonPropertyName("price_change_percentage_24h")] public decimal? PriceChangePercentage24h { get; set; }
+    [JsonPropertyName("circulating_supply")] public decimal? CirculatingSupply { get; set; }
+    [JsonPropertyName("total_supply")] public decimal? TotalSupply { get; set; }
+}
+
+public class CoinLinks
+{
+    [JsonPropertyName("homepage")] public List<string>? Homepage { get; set; }
+    [JsonPropertyName("blockchain_site")] public List<string>? BlockchainSite { get; set; }
 }

@@ -1,5 +1,4 @@
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Windows.Input;
 using CryptoApp.Commands;
 using CryptoApp.Models;
@@ -10,13 +9,11 @@ namespace CryptoApp.ViewModels;
 public class DetailsViewModel : BaseViewModel
 {
     private string _searchText = "";
-    
     private string _linkText = "";
-    
     private ObservableCollection<string> _filteredItems = [];
-    
     private DetailsText? _detailsText;
-    
+    private readonly Dictionary<string, string> _coinIds = new(); // display name -> coin id
+
     public string SearchText
     {
         get => _searchText;
@@ -27,7 +24,7 @@ public class DetailsViewModel : BaseViewModel
             RefreshItems();
         }
     }
-    
+
     public string LinkText
     {
         get => _linkText;
@@ -37,7 +34,7 @@ public class DetailsViewModel : BaseViewModel
             OnPropertyChanged(nameof(LinkText));
         }
     }
-    
+
     public ObservableCollection<string> FilteredItems
     {
         get => _filteredItems;
@@ -47,7 +44,7 @@ public class DetailsViewModel : BaseViewModel
             OnPropertyChanged(nameof(FilteredItems));
         }
     }
-    
+
     public DetailsText? DetailsText
     {
         get => _detailsText;
@@ -57,9 +54,8 @@ public class DetailsViewModel : BaseViewModel
             OnPropertyChanged(nameof(DetailsText));
         }
     }
-    
-    public ICommand OpenLinkCommand { get; }
 
+    public ICommand OpenLinkCommand { get; }
     public ICommand ItemSelectedCommand { get; }
 
     public DetailsViewModel()
@@ -67,93 +63,105 @@ public class DetailsViewModel : BaseViewModel
         OpenLinkCommand = new OpenLinkCommand();
         ItemSelectedCommand = new ItemSelectedCommand(this);
     }
-    
+
     private async void RefreshItems()
     {
         if (string.IsNullOrWhiteSpace(_searchText))
         {
             FilteredItems.Clear();
+            _coinIds.Clear();
             return;
         }
-        
-        var assets = await ApiService.GetSearchResultsAsync(SearchText);
 
-        FilteredItems.Clear();
-        
-        if (assets.Data is null)
+        try
         {
-            return;
+            var result = await ApiService.GetSearchResultsAsync(SearchText);
+
+            FilteredItems.Clear();
+            _coinIds.Clear();
+
+            if (result.Coins is null) return;
+
+            for (var i = 0; i < result.Coins.Count && i < 5; i++)
+            {
+                var coin = result.Coins[i];
+                var displayName = $"{coin.Name} ({coin.Symbol?.ToUpper()})";
+                FilteredItems.Add(displayName);
+                if (coin.Id != null)
+                    _coinIds[displayName] = coin.Id;
+            }
         }
-        
-        for (var i = 0; i < assets.Data.Count && i < 5; i++)
+        catch
         {
-            FilteredItems.Add(assets.Data[i].Name! + $" ({assets.Data[i].Symbol})");
+            // Network error — leave list empty
         }
     }
 
     public async void ShowDetails()
     {
-        var search = SearchText.Split('(').First();
-        
-        var details = await ApiService.GetSearchResultsAsync(search);
-
-        if (details.Data is null || details.Data.Count == 0)
+        try
         {
-            return;
+        if (!_coinIds.TryGetValue(SearchText, out var coinId))
+        {
+            var search = SearchText.Split('(').First().Trim();
+            var fallback = await ApiService.GetSearchResultsAsync(search);
+            coinId = fallback.Coins?.FirstOrDefault()?.Id;
+            if (coinId is null) return;
         }
-        
-        var data = details.Data[0];
+
+        var data = await ApiService.GetCoinDetailsAsync(coinId);
+        if (data is null || data.MarketData is null) return;
 
         LinkText = "Official site";
         var name = data.Name ?? "no data :(";
-        var symbol = data.Symbol ?? "no data :(";
-        var rank = data.Rank ?? "no data :(";
-        var price = data.PriceUsd ?? "no data :(";
-        var supply = data.Supply ?? "no data :(";
-        var capitalisation = data.MarketCapUsd ?? "no data :(";
-        var volume = data.VolumeUsd24Hr ?? "no data :(";
-        var vwap = data.Vwap24Hr ?? "no data :(";
+        var symbol = $"Code symbol: {data.Symbol?.ToUpper() ?? "no data :("}";
+        var rank = $"Rank on market: {data.MarketCapRank?.ToString() ?? "no data :("}";
+
+        var priceVal = data.MarketData.CurrentPrice?.GetValueOrDefault("usd");
+        var price = priceVal.HasValue
+            ? $"Current price: {priceVal.Value:G10}$"
+            : "Current price: no data :(";
+
+        var supplyVal = data.MarketData.CirculatingSupply;
+        var supply = supplyVal.HasValue
+            ? $"Currency supply: {supplyVal.Value:G10}"
+            : "Currency supply: no data :(";
+
+        var capVal = data.MarketData.MarketCap?.GetValueOrDefault("usd");
+        var capitalisation = capVal.HasValue
+            ? $"Market capitalisation: {capVal.Value:G10}$"
+            : "Market capitalisation: no data :(";
+
+        var volVal = data.MarketData.TotalVolume?.GetValueOrDefault("usd");
+        var volume = volVal.HasValue
+            ? $"Last 24h volume transferred: {volVal.Value:G10}$"
+            : "Last 24h volume transferred: no data :(";
+
+        var changeVal = data.MarketData.PriceChangePercentage24h;
         var changeString = "Last 24h price change: ";
-
-        symbol = $"Code symbol: {symbol}";
-        rank = $"Rank on market: {rank}";
-        price = data.PriceUsd is null
-            ? $"Current price: {price}"
-            : $"Current price: {decimal.Parse(price, CultureInfo.InvariantCulture):G10}$";
-        supply = data.Supply is null
-            ? $"Currency supply: {supply}"
-            : $"Currency supply: {decimal.Parse(supply, CultureInfo.InvariantCulture):G10}$";
-        capitalisation = data.MarketCapUsd is null
-            ? $"Market capitalisation: {capitalisation}"
-            : $"Market capitalisation: {decimal.Parse(capitalisation, CultureInfo.InvariantCulture):G10}$";
-        volume = data.VolumeUsd24Hr is null
-            ? $"Last 24h volume transferred: {volume}"
-            : $"Last 24h volume transferred: {decimal.Parse(volume, CultureInfo.InvariantCulture):G10}$";
-        vwap = data.Vwap24Hr is null
-            ? $"Last 24h VWAP: {vwap}"
-            : $"Last 24h VWAP: {decimal.Parse(vwap, CultureInfo.InvariantCulture):G10}$";
-        
-
-        if (data.ChangePercent24Hr is not null)
+        if (changeVal.HasValue)
         {
-            changeString += $"{decimal.Parse(data.ChangePercent24Hr, CultureInfo.InvariantCulture):G10}%";
-
-            switch (decimal.Parse(data.ChangePercent24Hr, CultureInfo.InvariantCulture))
+            changeString += $"{changeVal.Value:G10}%";
+            changeString += changeVal.Value switch
             {
-                case > 0:
-                    changeString += " 📈";
-                    break;
-                case < 0:
-                    changeString += " 📉";
-                    break;
-            }
+                > 0 => " 📈",
+                < 0 => " 📉",
+                _ => ""
+            };
         }
         else
         {
             changeString += "no data :(";
         }
-        
-        DetailsText = new DetailsText(name, symbol, rank, price, supply, capitalisation, volume, changeString, vwap,
-            data.Explorer!);
+
+        var homepageUrl = data.Links?.Homepage?.FirstOrDefault(h => !string.IsNullOrEmpty(h)) ?? "";
+
+        DetailsText = new DetailsText(name, symbol, rank, price, supply, capitalisation,
+            volume, changeString, "Last 24h VWAP: N/A", homepageUrl);
+        }
+        catch
+        {
+            // Network error — details remain unchanged
+        }
     }
 }
